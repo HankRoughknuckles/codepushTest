@@ -12,6 +12,7 @@ import {
   View
 } from 'react-native';
 import codePush from 'react-native-code-push';
+import Crashes from 'appcenter-crashes';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -22,15 +23,31 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
-  componentDidMount() {
-    codePush.sync({ updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE })
-  }
+  // componentDidMount() {
+    // codePush.sync({ updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE })
+  // }
+
+  async setupCrashes() {
+    await Crashes.setEnabled(true);
+    Crashes.setListener({
+        shouldProcess: function (report) {
+            return true; // return true if the crash report should be processed, otherwise false.
+        },
+
+        // Other callbacks must also be defined at the same time if used.
+        // Default values are used if a method with return parameter is not defined.
+    });
+    isEnabled = await Crashes.isEnabled();
+    console.log('Crashes are enabled?', isEnabled);
+  };
 
   render() {
+    this.setupCrashes()
+    Crashes.generateTestCrash();
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          This is version 2.4, mofo!
+          This is version 2.5, mofo!
         </Text>
         <Text style={styles.instructions}>
           To get started, edit App.js

@@ -8,6 +8,9 @@
  */
 
 #import "AppDelegate.h"
+#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
+#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
+#import <AppCenterReactNative/AppCenterReactNative.h>
 #import <CodePush/CodePush.h>
 
 #import <React/RCTBundleURLProvider.h>
@@ -19,11 +22,17 @@
 {
   NSURL *jsCodeLocation;
 
+  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:false];  // Initialize AppCenter analytics
+
+  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes
+
+  [AppCenterReactNative register];  // Initialize AppCenter 
+
   
     #ifdef DEBUG
-        jsCodeLocation = [CodePush bundleURL];
-    #else
         jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+    #else
+        jsCodeLocation = [CodePush bundleURL];
     #endif
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
