@@ -43,6 +43,7 @@ export default class App extends Component<Props> {
 
   render() {
     this.setupCrashes()
+    console.log('this is a change');
     Crashes.generateTestCrash();
     return (
       <View style={styles.container}>
